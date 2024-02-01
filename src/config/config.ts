@@ -4,7 +4,9 @@ dotenv.config()
 
 const server = {
     port: process.env.PORT,
-    secret: process.env.API_SECRET
+    secret: process.env.API_SECRET,
+    protocol: `http${process.env.NODE_ENV === "production"?"s":""}`,
+    host: process.env.host || "localhost"
 }
 
 const particle = {
