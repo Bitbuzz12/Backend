@@ -6,7 +6,12 @@ const server = {
     port: process.env.PORT,
     secret: process.env.API_SECRET,
     protocol: `http${process.env.NODE_ENV === "production"?"s":""}`,
-    host: process.env.host || "localhost"
+    host: process.env.host || "localhost",
+    name: "Bitbuzz"
+}
+
+const db = {
+    url: process.env.DB_URI || "mongodb://localhost:27017/bitbuzz"
 }
 
 const particle = {
@@ -15,4 +20,4 @@ const particle = {
     project_id: process.env.PARTICLE_PROJECT_ID
 }
 
-export default {server, particle}
+export default {server, particle, db}
