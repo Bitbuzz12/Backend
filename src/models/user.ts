@@ -16,7 +16,8 @@ const userScehema = new mongoose.Schema<user_int>({
     email: {
         type: String,
         required: true,
-        match: emailRegex
+        match: emailRegex,
+        unique: true
     }
 
 })

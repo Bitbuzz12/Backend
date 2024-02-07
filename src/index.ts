@@ -9,6 +9,8 @@ import cookieParser from "cookie-parser"
 import MongoStore from "connect-mongo"
 import config from "./config/config";
 
+import authRouter from "./routers/auth"
+
 const app = express();
 
 const limiter = rateLimit({
@@ -20,14 +22,23 @@ const limiter = rateLimit({
 app.use(cors({
     origin: "*"
 }))
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
 app.use(helmet())
 app.use(limiter)
 app.use(Session({
     store: new MongoStore({
+        mongoUrl: config.db.url,
         dbName: config.server.name + "-sessions",
+
     }),
-    secret: config.server.secret!
+    secret: config.server.secret!,
+    saveUninitialized: true,
+    resave: true
 }))
+app.use(cookieParser())
+
+app.use("/api/v1/auth", authRouter)
 
 async function start(){
         const server = http.createServer(app)
@@ -37,7 +48,7 @@ async function start(){
         server.on("listening", ()=>{
             console.log(`server running on port ${(server.address() as {port: number}).port}`)
         })
-        server.listen()
+        server.listen(config.server.port)
         return server
     })
     .catch(err=>{

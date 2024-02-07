@@ -11,7 +11,7 @@ const server = {
 }
 
 const db = {
-    url: process.env.DB_URI || "mongodb://localhost:27017/bitbuzz"
+    url: process.env.DB_URI || "mongodb://localhost:27017/Bitbuzz"
 }
 
 const particle = {
