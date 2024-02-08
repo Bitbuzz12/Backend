@@ -30,9 +30,20 @@ export const forgetPassword = catchAsync(async(req: Request, res: Response)=>{
     if(!emailRegex.test(email))return res.status(400).json("invalid email address.")
     const user = await User.findOne({email})
     if(!user)return res.status(404).json("email is not registered")
-    
+    await user.sendResetToken()
+    return res.status(200).json(`Reset password link sent to ${user.email}`)
 })
 
-export const resetPassword = catchAsync((req: Request, res: Response)=>{
-
+export const resetPassword = catchAsync(async(req: Request, res: Response)=>{
+    const {token} = req.params
+    if(!token)return res.status(400).json("Invalid reset token")
+    const target = await User.findOne({resetToken: token, tokenExpiresIn: {$gte: Date.now()}})
+    if(!target)return res.status(404).json("User not found")
+    const {password} = req.body;
+    if(!password)return res.status(400).json("password is required")
+    target.password = password
+    await target.save()
+    const authToken = target.genToken();
+    (req.session as unknown as {token: string}).token = authToken
+    return res.status(200).json({...target.toObject(), password: undefined})
 })
