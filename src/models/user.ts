@@ -38,7 +38,7 @@ userScehema.methods.verifyPassword = function(pass: string){
     return bcrypt.compare(pass, this.password)
 }
 
-userScehema.methods.sendAuthToken = async function(){
+userScehema.methods.sendResetToken = async function(){
     let token = crypto.createHash("sha256").update(crypto.randomBytes(22).toString("hex")).digest("base64")
     this.resetToken = token
     this.tokenExpiresIn = Date.now() + (1000 * 60 * 60 * 2)
