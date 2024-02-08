@@ -25,7 +25,6 @@ class Mailer implements mailer_int{
             html: await this.genTemplate(type, options)
         })
     }
-
     public sendResetToken = async(token: string) =>{
         await this.sendMail(mail_types.password_reset, {token})
     }

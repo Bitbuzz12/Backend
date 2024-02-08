@@ -6,4 +6,7 @@ interface user_int extends Document{
     password: string
     genToken: ()=>string
     verifyPassword: (pass: string)=>Promise<boolean>
+    sendResetToken: ()=>Promise<void>
+    resetToken: string
+    tokenExpiresIn: number
 }
