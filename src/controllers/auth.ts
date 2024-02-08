@@ -10,7 +10,7 @@ export const register = catchAsync(async(req: Request, res: Response)=>{
 })
 
 export const login = catchAsync((req: Request, res: Response)=>{
-    
+    const {email, password} = req.body
 })
 
 export const forgetPassword = catchAsync((req: Request, res: Response)=>{

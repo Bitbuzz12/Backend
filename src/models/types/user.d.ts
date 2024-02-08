@@ -5,4 +5,5 @@ interface user_int extends Document{
     email: string
     password: string
     genToken: ()=>string
+    verifyPassword: (pass: string)=>Promise<boolean>
 }

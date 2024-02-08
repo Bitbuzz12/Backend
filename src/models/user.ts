@@ -27,6 +27,10 @@ userScehema.methods.genToken = function(){
     return token
 }
 
+userScehema.methods.verifyPassword = function(pass: string){
+    return bcrypt.compare(pass, this.password)
+}
+
 userScehema.pre("save", async function(){
     if(this.isNew || this.isModified("password")){
         const salt = await bcrypt.genSalt(12)
