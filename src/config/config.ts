@@ -20,4 +20,12 @@ const particle = {
     project_id: process.env.PARTICLE_PROJECT_ID
 }
 
-export default {server, particle, db}
+const mailer = {
+    user: process.env.MAIL_USER,
+    pass: process.env.MAIL_PASS,
+    port: process.env.MAIL_PORT || 587,
+    host: process.env.MAIL_HOST,
+    address: process.env.MAIL_ADDRESS
+}
+
+export default {server, particle, db, mailer}
