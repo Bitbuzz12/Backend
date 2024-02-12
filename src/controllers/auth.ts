@@ -42,6 +42,8 @@ export const resetPassword = catchAsync(async(req: Request, res: Response)=>{
     const {password} = req.body;
     if(!password)return res.status(400).json("password is required")
     target.password = password
+    target.tokenExpiresIn = undefined
+    target.resetToken = undefined
     await target.save()
     const authToken = target.genToken();
     (req.session as unknown as {token: string}).token = authToken
