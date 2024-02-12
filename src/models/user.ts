@@ -39,7 +39,7 @@ userScehema.methods.verifyPassword = function(pass: string){
 }
 
 userScehema.methods.sendResetToken = async function(){
-    let token = crypto.createHash("sha256").update(crypto.randomBytes(22).toString("hex")).digest("base64")
+    let token = crypto.randomBytes(22).toString("hex")
     this.resetToken = token
     this.tokenExpiresIn = Date.now() + (1000 * 60 * 60 * 2)
     await this.save()
