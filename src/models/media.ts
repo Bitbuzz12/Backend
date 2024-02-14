@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 import { media_int } from "./types/media"
 
-enum media_types{image="image", video="video"}
+export enum media_types{image="image", video="video"}
 
 
 const mediaSchema = new mongoose.Schema<media_int>({
