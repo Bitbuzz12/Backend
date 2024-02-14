@@ -8,14 +8,14 @@ interface ExtReq extends Request{
     user: user_int
 }
 
-export default async(req: ExtReq, res: Response, next: NextFunction)=>{
+export default async(req: Request, res: Response, next: NextFunction)=>{
     const token = (req.session as unknown as {token: string}).token
     if(!token)return res.status(401).json("Unauthenticated")
     try{
     const decrypted = jwt.verify(token, config.server.secret!) as {id: string}
     const user = await User.findById(decrypted.id)
-    if(!user)return res.status(401).json("Unauthenticated")
-    req.user = user
+    if(!user)return res.status(401).json("Unauthenticated");
+    (req as ExtReq).user = user
     next()
 }catch(err){
     return res.status(401).json("Unauthenticated")
