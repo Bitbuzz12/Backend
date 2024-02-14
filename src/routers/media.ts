@@ -9,7 +9,7 @@ const router = Router()
 router.post("/", authorize,Media.createMedia)
 router.get("/", Media.getMedias)
 router.get("/uploads/", authorize, Media.getMyMedias)
-router.get("/:mediaId", validateIdParam, Media.getMedias)
+router.get("/:mediaId", validateIdParam, Media.getMedia)
 router.delete("/:mediaId", authorize, validateIdParam, Media.deleteMedia)
 
 export default router;

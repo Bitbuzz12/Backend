@@ -38,8 +38,9 @@ export const getMedias = catchAsync(async(req: Request, res: Response)=>{
 })
 
 export const getMedia = catchAsync(async(req: Request, res: Response)=>{
-    const media = await Media.findById(req.query.mediaId)
-    if(!media)return res.status(200).json(media)
+    const media = await Media.findById(req.params.mediaId)
+    if(!media)return res.status(400).json("media not found")
+    return res.status(200).json(media)
 })
 
 export const deleteMedia = catchAsync(async(req: ExtReq, res: Response)=>{

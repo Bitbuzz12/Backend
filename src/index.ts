@@ -10,6 +10,7 @@ import MongoStore from "connect-mongo"
 import config from "./config/config";
 
 import authRouter from "./routers/auth"
+import mediaRouter from "./routers/media"
 
 const app = express();
 
@@ -39,6 +40,7 @@ app.use(Session({
 app.use(cookieParser())
 
 app.use("/api/v1/auth", authRouter)
+app.use("/api/v1/medias", mediaRouter)
 
 async function start(){
         const server = http.createServer(app)
