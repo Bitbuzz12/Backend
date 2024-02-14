@@ -3,6 +3,7 @@ import { media_int } from "./types/media"
 
 enum media_types{image="image", video="video"}
 
+
 const mediaSchema = new mongoose.Schema<media_int>({
     type: {
         type: String,
