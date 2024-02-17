@@ -10,4 +10,6 @@ COPY . .
 
 RUN npm run build
 
+EXPOSE 2001
+
 CMD [ "npm", "start" ]
