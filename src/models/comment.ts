@@ -16,6 +16,11 @@ const commentSchema = new mongoose.Schema<comment_int>({
     body: {
         type: String,
         required: true
+    },
+    reactions: {
+        likes:[],
+        dislikes:[],
+        hahas: []
     }
 }, { timestamps: true})
 

@@ -25,6 +25,11 @@ const mediaSchema = new mongoose.Schema<media_int>({
         type: mongoose.Schema.Types.ObjectId,
         required: true
     },
+    reactions: {
+        likes:[],
+        dislikes:[],
+        hahas: []
+    },
 }, { timestamps: true, })
 
 const Media = mongoose.model("media", mediaSchema)

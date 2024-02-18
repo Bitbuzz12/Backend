@@ -50,7 +50,7 @@ export const deleteMedia = catchAsync(async(req: ExtReq, res: Response)=>{
 })
 
 export const reactToMedia = catchAsync(async(req: Request, res: Response)=>{
-
+    
 })
 
 export const commentOnMedia = catchAsync(async(req: Request, res: Response)=>{
