@@ -3,7 +3,8 @@ import Media, { media_types } from "../models/media";
 import Comment from "../models/comment";
 import { Request, Response } from "express";
 import { user_int } from "../models/types/user";
-import { validateObjectId } from "../utils/factory";
+import { reactions, validateObjectId } from "../utils/factory";
+import { Reactions } from "../models/types/reaction";
 
 interface ExtReq extends Request{
     user: user_int
@@ -49,14 +50,39 @@ export const deleteMedia = catchAsync(async(req: ExtReq, res: Response)=>{
     
 })
 
-export const reactToMedia = catchAsync(async(req: Request, res: Response)=>{
-    
+export const reactToMedia = catchAsync(async(req: ExtReq, res: Response)=>{
+    const {reaction} = req.query.reaction || req.body.reaction
+    if(!reaction)return res.status(400).json("select a reaction to react.")
+    if(!Object.values(reactions).includes(reaction.toString().toLowerCase()))return res.status(400).json(`invalid reaction "${reaction}"`)
+    const {mediaId} = req.params
+    let media = await Media.findById(mediaId)
+    if(!media)return res.status(404).json("media not found")
+    if(media.reactions[reaction as keyof Reactions].includes(req.user._id.toString())){
+        media.reactions[reaction as keyof Reactions] = media.reactions[reaction as keyof Reactions].filter(uid=>uid !== req.user._id.toString())
+    }else{
+        media.reactions[reaction as keyof Reactions].push(req.user._id.toString())
+    }
+    media = await media.save()
+    return res.status(200).json(media)
 })
 
-export const commentOnMedia = catchAsync(async(req: Request, res: Response)=>{
-
+export const commentOnMedia = catchAsync(async(req: ExtReq, res: Response)=>{
+    const media = await Media.findById(req.params.mediaId)
+    if(!media)return res.status(404).json("Media not found.")
+    const comment = await Comment.create({...req.body, mediaId: media._id.toString(), userId: req.user._id.toString()})
+    return res.status(201).json(comment)
 })
 
-export const repostMedia = catchAsync(async(req: Request, res: Response)=>{
-    
+export const getComments = catchAsync(async(req: Request, res: Response)=>{
+    const media = await Media.findById(req.params.mediaId)
+    if(!media)return res.status(404).json("Media not found.")
+    const comments = await Comment.find({mediaId: media._id.toString()})
+    return res.status(200).json(comments)
+})
+
+export const repostMedia = catchAsync(async(req: ExtReq, res: Response)=>{
+    const media = await Media.findById(req.params.mediaId)
+    if(!media)return res.status(404).json("Media not found.")
+    const newMedia = await Media.create({...media.toObject(), _id: undefined, reactions: {likes:[], dislikes: [], haha: []}, userId: req.user._id.toString()})
+    return res.status(200).json(newMedia)
 })
