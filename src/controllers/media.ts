@@ -51,16 +51,17 @@ export const deleteMedia = catchAsync(async(req: ExtReq, res: Response)=>{
 })
 
 export const reactToMedia = catchAsync(async(req: ExtReq, res: Response)=>{
-    const {reaction} = req.query.reaction || req.body.reaction
+    let reaction = req.query.reaction || req.body.reaction
     if(!reaction)return res.status(400).json("select a reaction to react.")
     if(!Object.values(reactions).includes(reaction.toString().toLowerCase()))return res.status(400).json(`invalid reaction "${reaction}"`)
     const {mediaId} = req.params
     let media = await Media.findById(mediaId)
     if(!media)return res.status(404).json("media not found")
-    if(media.reactions[reaction as keyof Reactions].includes(req.user._id.toString())){
+    reaction += "s"
+    if(media.reactions[reaction as keyof Reactions]?.includes(req.user._id.toString())){
         media.reactions[reaction as keyof Reactions] = media.reactions[reaction as keyof Reactions].filter(uid=>uid !== req.user._id.toString())
     }else{
-        media.reactions[reaction as keyof Reactions].push(req.user._id.toString())
+        media.reactions[reaction as keyof Reactions]?.push(req.user._id.toString())
     }
     media = await media.save()
     return res.status(200).json(media)

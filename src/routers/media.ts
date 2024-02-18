@@ -13,7 +13,7 @@ router.get("/:mediaId", validateIdParam, Media.getMedia)
 router.delete("/:mediaId", authorize, validateIdParam, Media.deleteMedia)
 router.post("/:mediaId/comments", authorize, validateIdParam, Media.commentOnMedia)
 router.get("/:mediaId/comments", authorize, validateIdParam, Media.getComments)
-router.patch("/:meadiaId/react", authorize, validateIdParam, Media.reactToMedia)
+router.patch("/:mediaId/react", authorize, validateIdParam, Media.reactToMedia)
 router.patch("/:mediaId/repost", authorize, validateIdParam, Media.repostMedia)
 
 export default router;
